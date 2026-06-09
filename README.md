@@ -34,7 +34,7 @@ Serves on http://127.0.0.1:3001 and proxies `/api` to the host gateway at `:8080
 
 Push to `main` triggers `.github/workflows/deploy-staging.yml` (GitHub environment `staging`).
 
-Required secrets (same EC2 as Audittool):
+Required secrets in GitHub → **Settings → Environments → staging** (copy from the Audittool repo):
 
 | Secret | Description |
 |--------|-------------|
@@ -44,9 +44,11 @@ Required secrets (same EC2 as Audittool):
 | `EC2_PORT` | Optional SSH port |
 | `EC2_VUE_APP_DIR` | Optional; default `~/Audittool-vue` on the server |
 
+Until these secrets exist on **this repository**, the deploy workflow will fail with `missing server host`.
+
 ### One-time server setup
 
-1. Clone this repo on the staging EC2 next to Audittool, e.g. `~/Audittool-vue`.
+1. Clone this repo on the staging EC2 next to Audittool, e.g. `~/Audittool-vue`, or run `bash deploy/bootstrap-staging.sh`.
 2. Ensure Audittool backend is running (`api-gateway` on host port `8080`).
 3. Add `deploy/Caddyfile.snippet` to the host Caddy config and reload Caddy.
 4. Point DNS `vue-staging.christavansanten.org` to the staging EC2 IP.
