@@ -1,0 +1,170 @@
+:root {
+  color-scheme: dark;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.92);
+  background: #0f1419;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+a {
+  color: #93c5fd;
+  text-decoration: none;
+}
+
+a.router-link-active {
+  font-weight: 600;
+}
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.app-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.app-nav {
+  display: flex;
+  gap: 1rem;
+}
+
+.app-user {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.app-main {
+  padding: 1.25rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+}
+
+.muted {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.error {
+  color: #fca5a5;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+button,
+.btn-sm {
+  cursor: pointer;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: inherit;
+  padding: 0.45rem 0.85rem;
+}
+
+button.primary {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+button.secondary,
+.btn-sm.secondary {
+  font-size: 0.85rem;
+  padding: 0.3rem 0.6rem;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+input,
+textarea {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  color: inherit;
+  padding: 0.45rem 0.6rem;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  vertical-align: top;
+}
+
+.td-ref {
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.icon-btn {
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  background: none;
+}
+
+.icon-btn:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.icon-btn--filled {
+  opacity: 0.85;
+}
+
+code {
+  font-size: 0.88em;
+}

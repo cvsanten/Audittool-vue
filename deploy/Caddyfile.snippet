@@ -1,0 +1,6 @@
+# One-time host reverse proxy for vue-staging.christavansanten.org
+# Assumes Caddy on the staging EC2 host and Audittool backend on :8080.
+
+vue-staging.christavansanten.org {
+    reverse_proxy 127.0.0.1:3001
+}

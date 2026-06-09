@@ -1,0 +1,10 @@
+services:
+  frontend-vue:
+    build: .
+    ports:
+      - "127.0.0.1:3001:80"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      API_GATEWAY_URL: http://host.docker.internal:8080
+    restart: unless-stopped
