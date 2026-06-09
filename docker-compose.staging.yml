@@ -1,0 +1,13 @@
+# Used on staging EC2 when the Audittool stack is running (api-gateway on Docker network).
+services:
+  frontend-vue:
+    networks:
+      - default
+      - audittool_net
+    environment:
+      API_GATEWAY_URL: http://api-gateway:8080
+
+networks:
+  audittool_net:
+    external: true
+    name: ${AUDIT_NETWORK:-audittool_default}
