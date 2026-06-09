@@ -44,7 +44,7 @@ Required secrets in GitHub → **Settings → Environments → staging** (copy f
 | `EC2_PORT` | Optional SSH port |
 | `EC2_VUE_APP_DIR` | Optional; default `~/Audittool-vue` on the server |
 
-Until these secrets exist on **this repository**, the deploy workflow will fail with `missing server host`.
+Until these secrets exist on **this repository**, use the **Audittool** repo workflow `Deploy Vue Staging` instead (reuses existing EC2 secrets).
 
 ### One-time server setup
 

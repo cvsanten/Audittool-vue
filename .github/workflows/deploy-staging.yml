@@ -1,8 +1,9 @@
 name: Deploy Vue Staging
 
+# Prefer Audittool repo workflow deploy-vue-staging.yml (reuses EC2 secrets).
+# This workflow is manual-only until staging secrets are added to Audittool-vue.
+
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 concurrency:
@@ -39,4 +40,8 @@ jobs:
             docker compose build --no-cache
             docker compose up -d
             docker image prune -f
+            if [ -f /etc/caddy/Caddyfile ] && ! grep -q 'vue-staging.christavansanten.org' /etc/caddy/Caddyfile; then
+              sudo tee -a /etc/caddy/Caddyfile < deploy/Caddyfile.snippet
+              sudo caddy reload --config /etc/caddy/Caddyfile
+            fi
             echo "Vue staging deployed from $APP_DIR ($APP_VERSION)"
