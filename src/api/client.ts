@@ -45,6 +45,18 @@ export function setSession(login: OrganizationLoginResponse): void {
   sessionStorage.setItem(ROLE_KEY, login.role);
 }
 
+export function readSession(): {
+  organizationName: string | null;
+  role: string | null;
+  accessToken: string | null;
+} {
+  return {
+    organizationName: sessionStorage.getItem(ORG_KEY),
+    role: sessionStorage.getItem(ROLE_KEY),
+    accessToken: sessionStorage.getItem(TOKEN_KEY),
+  };
+}
+
 export function organizationName(): string | null {
   return sessionStorage.getItem(ORG_KEY);
 }
