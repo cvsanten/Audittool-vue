@@ -19,6 +19,9 @@ docker compose up -d
 
 echo ""
 echo "Vue container listening on 127.0.0.1:3001"
-echo "Add deploy/Caddyfile.snippet to host Caddy and reload:"
-echo "  sudo caddy reload --config /etc/caddy/Caddyfile"
+echo "Host reverse proxy (nginx on staging EC2):"
+echo "  sudo cp deploy/nginx-staging.conf /etc/nginx/sites-available/vue-staging.christavansanten.org"
+echo "  sudo ln -sf /etc/nginx/sites-available/vue-staging.christavansanten.org /etc/nginx/sites-enabled/"
+echo "  sudo certbot --nginx -d vue-staging.christavansanten.org"
+echo "  sudo nginx -t && sudo systemctl reload nginx"
 echo "DNS: vue-staging.christavansanten.org -> this host"
