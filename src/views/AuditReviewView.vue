@@ -2,16 +2,18 @@
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import ReviewCommentToggle from "../components/ReviewCommentToggle.vue";
+import ReviewFeedbackModal from "../components/ReviewFeedbackModal.vue";
 import {
   currentUserEmail,
   currentUserId,
   fetchAssessments,
   fetchAudit,
   fetchIsoControls,
+  submitAuditReview,
   upsertControlReviewComment,
   upsertHsReviewComment,
 } from "../api/client";
-import type { Assessment, Audit, IsoControl } from "../api/types";
+import type { Assessment, Audit, IsoControl, ReviewDecision } from "../api/types";
 import { hsRowsInScope, parseHsMap } from "../domain/hs";
 
 const props = defineProps<{ auditId: number }>();
@@ -21,8 +23,11 @@ const audit = ref<Audit | null>(null);
 const assessments = ref<Assessment[]>([]);
 const controls = ref<IsoControl[]>([]);
 const err = ref<string | null>(null);
+const toast = ref<string | null>(null);
 const hsSaving = ref<string | null>(null);
 const controlSaving = ref<number | null>(null);
+const reviewModalOpen = ref(false);
+const reviewSaving = ref(false);
 
 const hsMap = computed(() => parseHsMap(audit.value?.harmonizedStructureConformance ?? null));
 const hsRefs = computed(() => (audit.value ? hsRowsInScope(audit.value) : []));
@@ -99,6 +104,33 @@ async function saveControl(controlId: number, comment: string | null) {
   }
 }
 
+function openReviewModal() {
+  err.value = null;
+  reviewModalOpen.value = true;
+}
+
+async function submitReview(payload: { decision: ReviewDecision; comment: string }) {
+  if (!audit.value || !canEditReviewComments.value) return;
+  reviewSaving.value = true;
+  err.value = null;
+  try {
+    await submitAuditReview(audit.value.id, {
+      decision: payload.decision,
+      comment: payload.comment || null,
+    });
+    reviewModalOpen.value = false;
+    toast.value =
+      payload.decision === "APPROVED"
+        ? "Audit goedgekeurd"
+        : "Audit teruggestuurd naar hoofdauditor";
+    router.push({ name: "audits" });
+  } catch (e) {
+    err.value = e instanceof Error ? e.message : "Review indienen mislukt";
+  } finally {
+    reviewSaving.value = false;
+  }
+}
+
 onMounted(() => {
   load().catch((e) => {
     err.value = e instanceof Error ? e.message : "Laden mislukt";
@@ -118,6 +150,25 @@ onMounted(() => {
       }}
     </p>
     <p v-if="err" class="error">{{ err }}</p>
+    <p v-if="toast" class="toast">{{ toast }}</p>
+
+    <div v-if="canEditReviewComments" class="review-banner card">
+      <div class="review-banner-body">
+        <p class="review-banner-label">Volgende stap</p>
+        <p class="review-banner-message">
+          Deze audit wacht op jouw reviewbeslissing.
+        </p>
+      </div>
+      <button type="button" class="primary" @click="openReviewModal">Review indienen</button>
+    </div>
+
+    <ReviewFeedbackModal
+      :open="reviewModalOpen"
+      :audit-title="audit.title"
+      :saving="reviewSaving"
+      @close="reviewModalOpen = false"
+      @submit="submitReview"
+    />
 
     <section class="card table-card">
       <h2>Harmonized structure</h2>
@@ -206,5 +257,26 @@ onMounted(() => {
   max-width: 22rem;
   white-space: pre-wrap;
   font-size: 0.9rem;
+}
+.review-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  border-color: rgba(147, 197, 253, 0.35);
+  background: rgba(37, 99, 235, 0.12);
+}
+.review-banner-label {
+  margin: 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  font-weight: 600;
+}
+.review-banner-message {
+  margin: 0.25rem 0 0;
 }
 </style>

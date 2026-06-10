@@ -101,6 +101,94 @@ button.secondary,
   padding: 0.3rem 0.6rem;
 }
 
+.toast {
+  color: #86efac;
+  margin: 0 0 1rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(5, 8, 12, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-panel {
+  width: 100%;
+  max-width: 420px;
+  max-height: min(90vh, 720px);
+  overflow: auto;
+  background: #1a222d;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 1.25rem 1.35rem;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
+}
+
+.modal-panel--wide {
+  max-width: 560px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.modal-kicker {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93c5fd;
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+}
+
+.modal-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.modal-title--left {
+  text-align: left;
+}
+
+.modal-meta {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.modal-close {
+  flex-shrink: 0;
+  padding: 0.25rem 0.55rem;
+  line-height: 1;
+  font-size: 1.35rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+select {
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  color: inherit;
+  padding: 0.45rem 0.6rem;
+}
+
 button:disabled {
   opacity: 0.55;
   cursor: not-allowed;

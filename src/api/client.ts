@@ -5,6 +5,7 @@ import type {
   DashboardStats,
   IsoControl,
   OrganizationLoginResponse,
+  ReviewDecision,
 } from "./types";
 
 const API = "/api";
@@ -175,6 +176,19 @@ export async function upsertControlReviewComment(
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ reviewComment }),
+    }),
+  );
+}
+
+export async function submitAuditReview(
+  auditId: number,
+  body: { decision: ReviewDecision; comment: string | null },
+): Promise<Audit> {
+  return parseJson(
+    await authFetch(`${API}/audits/${auditId}/submit-review`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
     }),
   );
 }

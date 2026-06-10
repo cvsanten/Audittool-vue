@@ -11,6 +11,8 @@ export type AuditType = "GAP-analyse" | "interne audit";
 
 export type ComplianceStatus = "COMPLIANT" | "PARTIAL" | "NON_COMPLIANT" | "NOT_APPLICABLE";
 
+export type ReviewDecision = "APPROVED" | "SEND_BACK";
+
 export interface OrganizationLoginResponse {
   accessToken: string;
   tokenType: string;
@@ -34,6 +36,8 @@ export interface Audit {
   type: AuditType;
   reviewerUserId?: number | null;
   reviewerEmail?: string | null;
+  reviewComment?: string | null;
+  reviewDecision?: ReviewDecision | null;
   harmonizedStructureConformance?: Record<string, unknown> | null;
   harmonizedStructureRefsInScope?: string[] | null;
   isoControlIdsInScope?: number[] | null;
