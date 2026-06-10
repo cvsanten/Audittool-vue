@@ -37,7 +37,8 @@ onMounted(async () => {
             <td class="muted">{{ a.organizationName }}</td>
             <td><span class="badge">{{ a.status }}</span></td>
             <td class="muted">{{ a.auditorName }}</td>
-            <td>
+            <td class="actions">
+              <RouterLink :to="`/audits/${a.id}/edit`" class="btn-sm secondary">Edit</RouterLink>
               <RouterLink
                 v-if="a.status === 'IN_REVIEW'"
                 :to="`/audits/${a.id}/review`"
@@ -52,3 +53,11 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+</style>

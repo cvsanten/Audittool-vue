@@ -2,10 +2,15 @@ import type {
   Assessment,
   Audit,
   AuditPage,
+  AuditStatus,
+  AuditType,
+  ComplianceStatus,
   DashboardStats,
+  HarmonizedStructureConformance,
   IsoControl,
   OrganizationLoginResponse,
   ReviewDecision,
+  UpdateAuditPayload,
 } from "./types";
 
 const API = "/api";
@@ -187,6 +192,35 @@ export async function submitAuditReview(
   return parseJson(
     await authFetch(`${API}/audits/${auditId}/submit-review`, {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }),
+  );
+}
+
+export async function updateAudit(id: number, body: UpdateAuditPayload): Promise<Audit> {
+  return parseJson(
+    await authFetch(`${API}/audits/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    }),
+  );
+}
+
+export async function upsertAssessment(
+  auditId: number,
+  body: {
+    id?: number;
+    isoControlId: number | null;
+    complianceStatus: ComplianceStatus;
+    notes?: string | null;
+    auditee?: string | null;
+  },
+): Promise<Assessment> {
+  return parseJson(
+    await authFetch(`${API}/audits/${auditId}/assessments`, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
     }),

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import AuditSubnav from "../components/AuditSubnav.vue";
 import ReviewCommentToggle from "../components/ReviewCommentToggle.vue";
 import ReviewFeedbackModal from "../components/ReviewFeedbackModal.vue";
+import { useAuditAccess } from "../composables/useAuditAccess";
 import {
-  currentUserEmail,
-  currentUserId,
   fetchAssessments,
   fetchAudit,
   fetchIsoControls,
@@ -29,6 +29,8 @@ const controlSaving = ref<number | null>(null);
 const reviewModalOpen = ref(false);
 const reviewSaving = ref(false);
 
+const { canEditReviewComments } = useAuditAccess(audit);
+
 const hsMap = computed(() => parseHsMap(audit.value?.harmonizedStructureConformance ?? null));
 const hsRefs = computed(() => (audit.value ? hsRowsInScope(audit.value) : []));
 
@@ -47,22 +49,6 @@ const assessmentByControlId = computed(() => {
   }
   return m;
 });
-
-function matchesUser(userId?: number | null, email?: string | null): boolean {
-  const uid = currentUserId();
-  if (uid != null && userId != null && Number(userId) === Number(uid)) return true;
-  const em = currentUserEmail()?.toLowerCase();
-  const linked = email?.trim().toLowerCase();
-  return Boolean(em && linked && em === linked);
-}
-
-const isAssignedReviewer = computed(
-  () =>
-    audit.value?.status === "IN_REVIEW"
-    && matchesUser(audit.value.reviewerUserId, audit.value.reviewerEmail),
-);
-
-const canEditReviewComments = computed(() => isAssignedReviewer.value);
 
 async function load() {
   err.value = null;
@@ -140,6 +126,8 @@ onMounted(() => {
 
 <template>
   <div v-if="audit">
+    <AuditSubnav :audit-id="audit.id" :show-review="audit.status === 'IN_REVIEW'" />
+
     <h1>{{ audit.title }}</h1>
     <p class="muted">{{ audit.organizationName }} · {{ audit.status }}</p>
     <p class="intro">

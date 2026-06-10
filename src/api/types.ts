@@ -13,6 +13,28 @@ export type ComplianceStatus = "COMPLIANT" | "PARTIAL" | "NON_COMPLIANT" | "NOT_
 
 export type ReviewDecision = "APPROVED" | "SEND_BACK";
 
+export type HarmonizedStructureConformance = {
+  status?: ComplianceStatus;
+  notes?: string | null;
+  auditee?: string | null;
+  reviewComment?: string | null;
+};
+
+export interface UpdateAuditPayload {
+  title: string;
+  scope?: string | null;
+  organizationName: string;
+  auditorName: string;
+  auditorUserId?: number | null;
+  startDate: string;
+  endDate?: string | null;
+  status: AuditStatus;
+  type: AuditType;
+  harmonizedStructureConformance?: Record<string, HarmonizedStructureConformance>;
+  harmonizedStructureRefsInScope?: string[] | null;
+  isoControlIdsInScope?: number[] | null;
+}
+
 export interface OrganizationLoginResponse {
   accessToken: string;
   tokenType: string;

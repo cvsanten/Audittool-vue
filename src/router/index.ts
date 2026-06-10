@@ -8,6 +8,12 @@ const router = createRouter({
     { path: "/", name: "dashboard", component: () => import("../views/DashboardView.vue") },
     { path: "/audits", name: "audits", component: () => import("../views/AuditsView.vue") },
     {
+      path: "/audits/:id/edit",
+      name: "audit-edit",
+      component: () => import("../views/AuditEditView.vue"),
+      props: (route) => ({ auditId: Number(route.params.id) }),
+    },
+    {
       path: "/audits/:id/review",
       name: "audit-review",
       component: () => import("../views/AuditReviewView.vue"),
