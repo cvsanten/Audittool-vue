@@ -36,7 +36,6 @@ async function submit() {
 <template>
   <div class="card login-card">
     <h1>Inloggen</h1>
-    <p class="muted">Vue staging preview — zelfde backend als de React-app.</p>
     <form @submit.prevent="submit">
       <div class="form-row">
         <label for="email">Email</label>
