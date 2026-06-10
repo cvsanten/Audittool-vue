@@ -65,6 +65,11 @@ export function hsRowsInScope(audit: { harmonizedStructureRefsInScope?: string[]
   return HS_ROWS.filter((r) => scoped.includes(r));
 }
 
+export function hsRowDefsInScope(audit: { harmonizedStructureRefsInScope?: string[] | null }) {
+  const refs = new Set(hsRowsInScope(audit));
+  return HS_ROW_DEFS.filter((row) => refs.has(row.ref));
+}
+
 export function parseHsMap(map?: Record<string, unknown> | null): Record<string, HsCell> {
   const out: Record<string, HsCell> = {};
   for (const ref of HS_ROWS) {

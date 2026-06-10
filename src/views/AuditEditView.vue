@@ -26,7 +26,7 @@ import type { Assessment, Audit, AuditType, ComplianceStatus, IsoControl } from 
 
 import { buildAuditUpdateBody, hsPayloadFromCells } from "../domain/auditUpdate";
 
-import { hsClauseLabel, hsRequirementLabel, hsRowsInScope, parseHsMap, type HsCell } from "../domain/hs";
+import { hsRowDefsInScope, hsRowsInScope, parseHsMap, type HsCell } from "../domain/hs";
 
 
 
@@ -76,7 +76,7 @@ const { canEditAuditContent, isAssignedReviewer } = useAuditAccess(audit);
 
 
 
-const hsRefs = computed(() => (audit.value ? hsRowsInScope(audit.value) : []));
+const hsTableRows = computed(() => (audit.value ? hsRowDefsInScope(audit.value) : []));
 
 
 
@@ -512,20 +512,20 @@ onMounted(() => {
 
           <tbody>
 
-            <tr v-for="ref in hsRefs" :key="ref">
+            <tr v-for="row in hsTableRows" :key="row.ref">
 
-              <td class="td-ref">{{ ref }}</td>
-              <td class="td-clause">{{ hsClauseLabel(ref) }}</td>
-              <td class="td-requirement">{{ hsRequirementLabel(ref) }}</td>
+              <td class="td-ref">{{ row.ref }}</td>
+              <td class="td-clause">{{ row.clause }}</td>
+              <td class="td-requirement">{{ row.requirement }}</td>
               <td>
 
                 <ComplianceStatusSelect
 
-                  v-if="hsCells[ref]"
+                  v-if="hsCells[row.ref]"
 
-                  v-model="hsCells[ref].status"
+                  v-model="hsCells[row.ref].status"
 
-                  :disabled="!canEditAuditContent || hsSaving === ref"
+                  :disabled="!canEditAuditContent || hsSaving === row.ref"
 
                 />
 
@@ -535,15 +535,15 @@ onMounted(() => {
 
                 <textarea
 
-                  v-if="hsCells[ref]"
+                  v-if="hsCells[row.ref]"
 
-                  v-model="hsCells[ref].notes"
+                  v-model="hsCells[row.ref].notes"
 
                   rows="2"
 
                   class="inline-notes"
 
-                  :disabled="!canEditAuditContent || hsSaving === ref"
+                  :disabled="!canEditAuditContent || hsSaving === row.ref"
 
                 />
 
@@ -557,13 +557,13 @@ onMounted(() => {
 
                   class="btn-sm secondary"
 
-                  :disabled="!canEditAuditContent || hsSaving === ref"
+                  :disabled="!canEditAuditContent || hsSaving === row.ref"
 
-                  @click="saveHs(ref)"
+                  @click="saveHs(row.ref)"
 
                 >
 
-                  {{ hsSaving === ref ? "…" : "Opslaan" }}
+                  {{ hsSaving === row.ref ? "…" : "Opslaan" }}
 
                 </button>
 
